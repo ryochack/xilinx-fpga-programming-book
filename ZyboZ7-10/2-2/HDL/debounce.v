@@ -5,7 +5,7 @@ module debounce (
     output  reg BTNOUT
 );
 
-// 125MHzを�?周�?40Hzを作�??
+// 125MHzを分周し40Hzを作成
 reg [21:0] cnt22;
 
 wire en40hz = (cnt22==22'd3125000-1);
@@ -19,7 +19,7 @@ always @( posedge CLK ) begin
         cnt22 <= cnt22 + 22'h1;
 end
 
-// スイ�?チ�?�力をFF2個で受け�?
+// スイッチ入力をFF2個で受ける
 reg ff1, ff2;
 
 always @( posedge CLK ) begin
@@ -33,7 +33,7 @@ always @( posedge CLK ) begin
     end
 end
 
-// 立ち上がり検�?�し�?�FFで受け�?
+// 立ち上がり検出し、FFで受ける
 wire temp = ff1 & ~ff2 & en40hz;
 
 always @( posedge CLK ) begin

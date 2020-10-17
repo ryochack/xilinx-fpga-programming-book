@@ -5,13 +5,13 @@ module blinkspeed (
     output  reg [3:0]   LED
 );
 
-// チャタリング除去回路を接�?
+// チャタリング除去回路を接続
 wire UP, DOWN;
 
 debounce d0 (.CLK(CLK), .RST(RST), .BTNIN(BTN[0]), .BTNOUT(UP));
 debounce d1 (.CLK(CLK), .RST(RST), .BTNIN(BTN[1]), .BTNOUT(DOWN));
 
-// 速度設定用ア�?プダウンカウンタ (0:min ~ 3:max)
+// 速度設定用アップダウンカウンタ (0:min ~ 3:max)
 reg [1:0] speed;
 
 always @( posedge CLK ) begin
@@ -23,7 +23,7 @@ always @( posedge CLK ) begin
         speed <= speed - 2'h1;
 end
 
-// シス�?�?クロ�?クを�?周
+// System Clockを分周
 reg [24:0] cnt25;
 
 always @( posedge CLK ) begin
@@ -33,7 +33,7 @@ always @( posedge CLK ) begin
         cnt25 <= cnt25 + 25'h1;
 end
 
-// LED用カウンタのイネ�?�ブルを作�??
+// LED用カウンタのEnableを作成
 reg ledcnten;
 
 always @* begin

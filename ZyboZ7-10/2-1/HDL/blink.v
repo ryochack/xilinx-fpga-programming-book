@@ -4,7 +4,7 @@ module blink (
     output  reg [3:0]   LED
 );
 
-// システムクロックを分周
+// System Clock繧貞��蜻ｨ
 reg [22:0] cnt23;
 
 always @( posedge CLK ) begin
@@ -16,7 +16,7 @@ end
 
 wire ledcnten = (cnt23==23'h7fffff);
 
-// LED用6進カウンタ
+// LED逕ｨ6騾ｲ繧ｫ繧ｦ繝ｳ繧ｿ
 reg [2:0] cnt3;
 
 always @( posedge CLK ) begin
@@ -29,7 +29,7 @@ always @( posedge CLK ) begin
             cnt3 <= cnt3 + 1'h1;
 end
 
-// LEDデコーダ
+// LED decoder
 always @* begin
     case ( cnt3 )
         3'd0:   LED = 4'b0001;
