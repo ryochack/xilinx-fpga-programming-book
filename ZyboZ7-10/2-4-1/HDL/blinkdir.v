@@ -6,31 +6,32 @@ module blinkspeed (
 );
 
 // チャタリング除去回路を接続
-wire BTNOUT;
+wire CHGMODE;
 
-debounce debounce (.CLK(CLK), .RST(RST), .BTNIN(BTN[0]), .BTNOUT(BTNOUT));
+debounce debounce (.CLK(CLK), .RST(RST), .BTNIN(BTN[0]), .BTNOUT(CHGMODE));
 
 // System Clockを分周
 reg [24:0] cnt25;
 
 always @( posedge CLK ) begin
-    if ( RST )
+    if ( RST || CHGMODE )
         cnt25 <= 25'h0;
     else
         cnt25 <= cnt25 + 25'h1;
 end
 
 // LED用カウンタのEnableを作成
-wire ledcnten = (cnt25[22:0] == 23'h7fffff);
+wire ledcnten = &cnt25[22:0];
 
 // LED direction state (0:<->, 1:->, 2:<-)
 reg [1:0] dir;
-localparam DIRLIMIT = 2'd2;
+localparam BOTH = 0, L2R = 1, R2L = 2;
+localparam DIRLIMIT = R2L;
 
 always @( posedge CLK ) begin
     if ( RST )
         dir <= 2'd0;
-    else if ( BTNOUT )
+    else if ( CHGMODE )
         if ( dir == DIRLIMIT )
             dir <= 2'd0;
         else
@@ -44,16 +45,12 @@ always @( posedge CLK ) begin
     if ( RST )
         cnt3 <= 3'd0;
     else if ( ledcnten )
-        if ( dir == 2'd0 )
-            if ( cnt3 == 3'd5 )
-                cnt3 <=3'd0;
-            else
-                cnt3 <= cnt3 + 1'd1;
+        if ( dir == BOTH && cnt3 == 3'd5 )
+            cnt3 <=3'd0;
+        else if ( dir != BOTH && cnt3 == 3'd3 )
+            cnt3 <=3'd0;
         else
-            if ( cnt3 == 3'd3 )
-                cnt3 <=3'd0;
-            else
-                cnt3 <= cnt3 + 1'd1;
+            cnt3 <= cnt3 + 1'd1;
 end
 
 always @* begin
