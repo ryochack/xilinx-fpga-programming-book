@@ -32,7 +32,7 @@ syncgen syncgen(
 // RGB出力を作成
 wire [9:0]  HBLANK = HFRONT + HWIDTH + HBACK;
 wire [9:0]  VBLANK = VFRONT + VWIDTH + VBACK;
-wire [9:0]  HIDX = HCNT - HBLANK + 10'd1;
+wire [9:0]  HIDX = HCNT - HBLANK + 10'd1;  // FFで受けてから出力するため、水平方向は1クロック先に値を用意する
 wire [9:0]  VIDX = VCNT - VBLANK;
 wire [3:0]  HNO = (HIDX - ((HIDX / HSIZE) * HSIZE)) / 4;
 wire [3:0]  VNO = VIDX / VSIZE;
