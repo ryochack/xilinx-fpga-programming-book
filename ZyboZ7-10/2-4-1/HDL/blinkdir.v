@@ -1,4 +1,4 @@
-module blinkspeed (
+module blinkdir (
     input               CLK,
     input               RST,
     input       [0:0]   BTN,
