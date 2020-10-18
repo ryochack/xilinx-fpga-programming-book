@@ -5,7 +5,8 @@ module pattern(
     output  reg [3:0]   VGA_G,
     output  reg [3:0]   VGA_B,
     output              VGA_HS,
-    output              VGA_VS
+    output              VGA_VS,
+    output              PCK
 );
 
 // VGA用パラメータ読み込み
@@ -15,7 +16,8 @@ localparam HSIZE = 10'd80;  // 640 / 8 = 80
 localparam VSIZE = 10'd120; // 480 / 4 = 120
 
 // 同期信号作成回路の接続
-wire        PCK;
+// DebugのためにV12にPCKを出力（pattern.xdcで定義）
+//wire        PCK;
 wire [9:0]  HCNT, VCNT;
 
 syncgen syncgen(
